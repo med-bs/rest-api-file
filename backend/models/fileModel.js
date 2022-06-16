@@ -11,6 +11,9 @@ const fileSchema = mongoose.Schema(
       type: String,
       required: [true, "Please add a title value"],
     },
+    link: {
+      type: String,
+    },
   },
   {
     timestamps: true,

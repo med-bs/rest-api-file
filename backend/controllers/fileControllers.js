@@ -1,6 +1,7 @@
 const File = require("../models/fileModel");
 const User = require("../models/userModel");
 const asyncHandler = require("express-async-handler");
+const fs = require("fs");
 
 // @desc Get files
 // @route GET /api/file
@@ -35,9 +36,15 @@ const createFile = asyncHandler(async (req, res) => {
     throw new Error("Please add title field");
   }
 
+  if (!req.file) {
+    res.status(400);
+    throw new Error("Please add file");
+  }
+
   const file = await File.create({
-    text: req.body.text,
+    title: req.body.text,
     user: req.user.id,
+    link: req.file.path,
   });
 
   res.status(200).json(file);
@@ -102,6 +109,12 @@ const deleteFile = asyncHandler(async (req, res) => {
   if (file.user.toString() !== req.user.id) {
     res.status(401);
     throw new Error("User not authorized");
+  }
+
+  try {
+    fs.unlinkSync(file.link);
+  } catch (err) {
+    console.error(err);
   }
 
   await file.remove();

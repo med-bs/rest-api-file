@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const upload = require("../middleware/uploadMiddleware");
 const {
   getAllFiles,
   getFilebyId,
@@ -9,7 +10,10 @@ const {
 } = require("../controllers/fileControllers");
 const { protect } = require("../middleware/authMiddleware");
 
-router.route("/").get(protect, getAllFiles).post(protect, createFile);
+router
+  .route("/")
+  .get(protect, getAllFiles)
+  .post([protect, upload.single("file")], createFile);
 
 router
   .route("/:id")

@@ -8,7 +8,7 @@ function FileItem({ file }) {
   return (
     <div >
       <div>Created at :<div>{new Date(file.createdAt).toLocaleString('en-US')}</div></div>
-      <h2 className='t2'>{file.title}</h2>
+      <a href={file.link} download={file.title+'.'+file.link.split('.').pop()} className='t2'>{file.title+'.'+file.link.split('.').pop()}</a>
       <div>Updated at :<div>{new Date(file.updatedAt).toLocaleString('en-US')}</div></div>
       <button onClick={() => dispatch(deleteFile(file._id))} className='close'>
         X

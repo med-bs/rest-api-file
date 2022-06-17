@@ -46,7 +46,6 @@ const createFile = asyncHandler(async (req, res) => {
     user: req.user.id,
     link: req.file.path,
   });
-  console.log("z", file);
   res.status(200).json(file);
 });
 

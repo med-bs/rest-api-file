@@ -44,12 +44,14 @@ function FileForm({update, setUpdate}) {
             value={text}
             onChange={(e) => setText(e.target.value)}
           />
+          { update !== null ? '':(
           <input
             type='file'
             name='file'
             id='file'
             onChange={(e) => setData(e.target.files[0])}
           />
+          ) }
         </div>
         <div className='form-group'>
           <button className='btn btn-block' type='submit'>

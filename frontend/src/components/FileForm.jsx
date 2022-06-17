@@ -1,10 +1,11 @@
 import React from 'react'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { createGoal,updateGoal } from '../features/goals/goalSlice'
+import { createFile,updateFile } from '../features/files/fileSlice'
 
-function GoalForm({update, setUpdate}) {
+function FileForm({update, setUpdate}) {
   const [text, setText] = useState("")
+  const [data, setData] = useState("")
 
   const dispatch = useDispatch()
 
@@ -20,29 +21,39 @@ function GoalForm({update, setUpdate}) {
 
     if(update!==null){
       const id =update._id
-      dispatch(updateGoal({id, text }))
+      dispatch(updateFile({id, text }))
     }else{
-      dispatch(createGoal({ text }))
+      const formData = new FormData();
+      formData.append("file", data);
+      formData.append("title", text);
+      dispatch(createFile(formData))
     }
     setText('')
     setUpdate(null)
   }
   return (
     <section className='form'>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onSubmit} encType="multipart/form-data">
         <div className='form-group'>
-          <label htmlFor='text'>Goal : {update !== null ? `(Old : ${update.text})` :''}</label>
+          <label htmlFor='text'>File : {update !== null ? `(Old title : ${update.title})` :''}</label>
           <input
             type='text'
             name='text'
+            placeholder='Title'
             id='text'
             value={text}
             onChange={(e) => setText(e.target.value)}
           />
+          <input
+            type='file'
+            name='file'
+            id='file'
+            onChange={(e) => setData(e.target.files[0])}
+          />
         </div>
         <div className='form-group'>
           <button className='btn btn-block' type='submit'>
-            { update !== null ? 'Update':'Add Goal' }
+            { update !== null ? 'Update file title':'Add file' }
           </button>
           <button className='btn btn-block' onClick={onReset}>
             Reset
@@ -53,4 +64,4 @@ function GoalForm({update, setUpdate}) {
   )
 }
 
-export default GoalForm
+export default FileForm

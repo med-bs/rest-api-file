@@ -1,10 +1,10 @@
 import React,{ useEffect ,useState} from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import GoalForm from '../components/GoalForm'
-import GoalItem from '../components/GoalItem'
+import FileForm from '../components/FileForm'
+import FileItem from '../components/FileItem'
 import Spinner from '../components/Spinner'
-import { getGoals, reset } from '../features/goals/goalSlice'
+import { getFiles, reset } from '../features/files/fileSlice'
 
 function Dashboard() {
   const navigate = useNavigate()
@@ -13,8 +13,8 @@ function Dashboard() {
   const [thisId, setThisId] = useState(null)
 
   const { user } = useSelector((state) => state.auth)
-  const { goals, isLoading, isError, message } = useSelector(
-    (state) => state.goals
+  const { files, isLoading, isError, message } = useSelector(
+    (state) => state.files
   )
 
   useEffect(() => {
@@ -26,7 +26,7 @@ function Dashboard() {
       navigate('/login')
     }
 
-    dispatch(getGoals()) 
+    dispatch(getFiles()) 
     if(!isError){ dispatch(reset()) }
   }, [user, navigate, isError, message, dispatch])
 
@@ -40,20 +40,20 @@ function Dashboard() {
         <p>Files Dashboard</p>
       </section>
 
-      <GoalForm update={thisId} setUpdate={setThisId}/>
+      <FileForm update={thisId} setUpdate={setThisId}/>
 
       <section className='content'>
-        {goals.length > 0 ? (
-          <div className='goals'>
-            {goals.map((goal) => (
-              <div key={goal._id} className='goal'>
-                <GoalItem goal={goal} />
-                <button onClick={() => setThisId(goal) } className='update'>M</button>
+        {files.length > 0 ? (
+          <div className='files'>
+            {files.map((file) => (
+              <div key={file._id} className='file'>
+                <FileItem file={file} />
+                <button onClick={() => setThisId(file) } className='update'>M</button>
               </div>
             ))}
           </div>
         ) : (
-          <h3 className='t3'>You have not set any goals</h3>
+          <h3 className='t3'>You have not publish any files</h3>
         )}
       </section>
     </>

@@ -9,10 +9,11 @@ const fileSchema = mongoose.Schema(
     },
     title: {
       type: String,
-      required: [true, "Please add a title value"],
+      required: [true, "Please add a title"],
     },
     link: {
       type: String,
+      required: [true, "Please add a link value"],
     },
   },
   {

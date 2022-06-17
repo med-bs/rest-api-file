@@ -31,7 +31,7 @@ const getFilebyId = asyncHandler(async (req, res) => {
 // @access Private
 
 const createFile = asyncHandler(async (req, res) => {
-  if (!req.body.text) {
+  if (!req.body.title) {
     res.status(400);
     throw new Error("Please add title field");
   }
@@ -42,11 +42,11 @@ const createFile = asyncHandler(async (req, res) => {
   }
 
   const file = await File.create({
-    title: req.body.text,
+    title: req.body.title,
     user: req.user.id,
     link: req.file.path,
   });
-
+  console.log("z", file);
   res.status(200).json(file);
 });
 

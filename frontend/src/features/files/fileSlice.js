@@ -1,21 +1,21 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import goalService from "./goalService";
+import fileService from "./fileService";
 
 const initialState = {
-  goals: [],
+  files: [],
   isError: false,
   isSuccess: false,
   isLoading: false,
   message: "",
 };
 
-// Create new goal
-export const createGoal = createAsyncThunk(
-  "goals/create",
-  async (goalData, thunkAPI) => {
+// Create new file
+export const createFile = createAsyncThunk(
+  "files/create",
+  async (fileData, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token;
-      return await goalService.createGoal(goalData, token);
+      return await fileService.createFile(fileData, token);
     } catch (error) {
       const message =
         (error.response &&
@@ -28,13 +28,13 @@ export const createGoal = createAsyncThunk(
   }
 );
 
-// Get user goals
-export const getGoals = createAsyncThunk(
-  "goals/getAll",
+// Get user files
+export const getFiles = createAsyncThunk(
+  "files/getAll",
   async (_, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token;
-      return await goalService.getGoals(token);
+      return await fileService.getFiles(token);
     } catch (error) {
       const message =
         (error.response &&
@@ -47,15 +47,15 @@ export const getGoals = createAsyncThunk(
   }
 );
 
-// Update user goal
-export const updateGoal = createAsyncThunk(
-  "goals/update",
-  async (goalData, thunkAPI) => {
+// Update user file
+export const updateFile = createAsyncThunk(
+  "files/update",
+  async (fileData, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token;
-      const text = goalData.text;
+      const text = fileData.text;
       const data = { text };
-      return await goalService.updateGoal(goalData.id, data, token);
+      return await fileService.updateFile(fileData.id, data, token);
     } catch (error) {
       const message =
         (error.response &&
@@ -68,13 +68,13 @@ export const updateGoal = createAsyncThunk(
   }
 );
 
-// Delete user goal
-export const deleteGoal = createAsyncThunk(
-  "goals/delete",
+// Delete user file
+export const deleteFile = createAsyncThunk(
+  "files/delete",
   async (id, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token;
-      return await goalService.deleteGoal(id, token);
+      return await fileService.deleteFile(id, token);
     } catch (error) {
       const message =
         (error.response &&
@@ -87,66 +87,66 @@ export const deleteGoal = createAsyncThunk(
   }
 );
 
-export const goalSlice = createSlice({
-  name: "goal",
+export const fileSlice = createSlice({
+  name: "file",
   initialState,
   reducers: {
     reset: (state) => initialState,
   },
   extraReducers: (builder) => {
     builder
-      .addCase(createGoal.pending, (state) => {
+      .addCase(createFile.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(createGoal.fulfilled, (state, action) => {
+      .addCase(createFile.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.goals.push(action.payload);
+        state.files.push(action.payload);
       })
-      .addCase(createGoal.rejected, (state, action) => {
+      .addCase(createFile.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
       })
-      .addCase(getGoals.pending, (state) => {
+      .addCase(getFiles.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getGoals.fulfilled, (state, action) => {
+      .addCase(getFiles.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.goals = action.payload;
+        state.files = action.payload;
       })
-      .addCase(getGoals.rejected, (state, action) => {
+      .addCase(getFiles.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
       })
-      .addCase(updateGoal.pending, (state) => {
+      .addCase(updateFile.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(updateGoal.fulfilled, (state, action) => {
+      .addCase(updateFile.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.goals = state.goals.map((goal) =>
-          goal._id === action.payload._id ? action.payload : goal
+        state.files = state.files.map((file) =>
+          file._id === action.payload._id ? action.payload : file
         );
       })
-      .addCase(updateGoal.rejected, (state, action) => {
+      .addCase(updateFile.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
       })
-      .addCase(deleteGoal.pending, (state) => {
+      .addCase(deleteFile.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(deleteGoal.fulfilled, (state, action) => {
+      .addCase(deleteFile.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.goals = state.goals.filter(
-          (goal) => goal._id !== action.payload._id
+        state.files = state.files.filter(
+          (file) => file._id !== action.payload._id
         );
       })
-      .addCase(deleteGoal.rejected, (state, action) => {
+      .addCase(deleteFile.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
@@ -154,5 +154,5 @@ export const goalSlice = createSlice({
   },
 });
 
-export const { reset } = goalSlice.actions;
-export default goalSlice.reducer;
+export const { reset } = fileSlice.actions;
+export default fileSlice.reducer;

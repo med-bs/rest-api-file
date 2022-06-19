@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use("/api/files/", require("./routes/fileRoutes"));
 app.use("/api/users/", require("./routes/userRoutes"));
 
-// Serve frontend
+// frontend
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/build")));
 

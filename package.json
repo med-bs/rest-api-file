@@ -4,7 +4,7 @@
   "description": "api rest",
   "main": "server.js",
   "scripts": {
-    "start": "node start backend/server.js",
+    "start": "node backend/server.js",
     "server": "nodemon start backend/server.js",
     "client": "npm start --prefix frontend",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend"

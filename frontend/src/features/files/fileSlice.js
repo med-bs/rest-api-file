@@ -54,7 +54,7 @@ export const updateFile = createAsyncThunk(
     try {
       const token = thunkAPI.getState().auth.user.token;
       const text = fileData.text;
-      const data = { text };
+      const data = { title: text };
       return await fileService.updateFile(fileData.id, data, token);
     } catch (error) {
       const message =

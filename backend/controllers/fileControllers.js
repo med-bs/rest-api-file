@@ -56,7 +56,7 @@ const createFile = asyncHandler(async (req, res) => {
 const updateFile = asyncHandler(async (req, res) => {
   const file = await File.findById(req.params.id);
 
-  if (!req.body.text) {
+  if (!req.body.title) {
     res.status(400);
     throw new Error("Please add text field");
   }
